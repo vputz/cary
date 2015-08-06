@@ -11,10 +11,10 @@ to the sender.
 
 setup(
     name='cary',
-    version='1.0.0',
+    url='https://github.com/vputz/cary',
+    version='1.0.1',
     description='a simple "email-bot" framework',
     long_description=long_description,
-    url='https://github.com/vputz/cary',
     author='Victor Putz',
     author_email='vputz@nyx.net',
 
