@@ -1,10 +1,8 @@
-#!/usr/bin/python
-
 import sys
 import logging
 from importlib.machinery import SourceFileLoader
 import argparse
-from caryapp import CaryApp
+from cary.caryapp import CaryApp
 
 
 def configure_cary(app, config):

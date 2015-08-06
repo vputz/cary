@@ -29,7 +29,7 @@ LOG_LEVEL = logging.INFO
 
 ####
 # Commands
-from echocommand import EchoCommand
+from cary.echocommand import EchoCommand
 COMMANDS = {"echo": (EchoCommand, {})}
 
 # email addresses to allow on the "from" line of messages sent

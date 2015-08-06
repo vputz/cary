@@ -49,8 +49,7 @@ SGVsbG8sIHRleHQgMiEK
     os.mkdir(os.path.join(tempworkingdir, "transactions"))
 
     def fin():
-        print("DELETING {0}".format(tempworkingdir))
-        # shutil.rmtree(tempworkingdir)
+        shutil.rmtree(tempworkingdir)
     request.addfinalizer(fin)
     result = EchoAction(ParsedEmail(message_text))
     result.set_config({},
