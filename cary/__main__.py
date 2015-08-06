@@ -28,7 +28,7 @@ def setup_logging(config):
     logging.info("Log opened")
 
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(
         description="process email message as an offline assistant")
     parser.add_argument('--settings', type=str,
@@ -44,3 +44,7 @@ if __name__ == "__main__":
         app.process_message(msg)
     except:
         logging.exception("Serious error on initialization/processing")
+
+
+if __name__ == "__main__":
+    main()
