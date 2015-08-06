@@ -2,3 +2,6 @@
 *~
 *.msg
 cary.egg-info
+.tox
+build
+dist
