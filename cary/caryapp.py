@@ -105,8 +105,10 @@ I'm sorry, but for some reason your message {0} failed; an email has been sent
 to the administrator and hopefully they will fix whatever went wrong!
 """.format(p.subject))
 
-    def send_apology_response(self, msg):
-        pass
+    def send_apology_email(self, msg):
+        p = ParsedEmail(msg)
+        self.send_response(p.from_address,
+                           self.apology_response(msg))
 
     @property
     def allowed_addresses(self):

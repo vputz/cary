@@ -49,12 +49,12 @@ def main():
             if config.ADMIN_EMAIL:
                 logging.error("Attempting admin email on exception {0}".format(
                     repr(e)))
-                app.send_admin_email(app, e, msg)
+                app.send_admin_email(e, msg)
             if config.SEND_APOLOGIES:
                 logging.error("Attempting apology email")
                 app.send_apology_email(msg)
-        except:
-            pass
+        except Exception as e:
+            logging.exception("Error sending admin/apology emails")
 
 
 if __name__ == "__main__":
