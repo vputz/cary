@@ -8,6 +8,15 @@ import logging
 # plus WORKSPACE_DIR/cary.log
 WORKSPACE_DIR = None
 
+# An admin address; failed handlers will have the stack trace or at
+# least the exception logged to this address.  Set to None to disable
+# admin emails
+ADMIN_EMAIL = None
+
+# Whether or not Cary should try to send an apology email if a serious
+# error happens
+SEND_APOLOGIES = True
+
 # Whether or not Cary should actually send the response email;
 # if this is False, Cary will write the response message to disk
 # but not actually send it (if SHOULD_RESPOND is False and

@@ -44,7 +44,7 @@ class CaryApp():
                 parsed_msg.from_address)
 
         if self.should_respond:
-            self.send_response(self.last_response, parsed_msg.from_address, self.last_response)
+            self.send_response(parsed_msg.from_address, self.last_response)
 
         if self.should_clean_up:
             action.clean_up()
@@ -53,21 +53,60 @@ class CaryApp():
     def help(self):
         return "Hi!  I'm Cary.  Send me a message with one of the following " \
           "in the title, and I'll do my best to respond usefully:\n\n\t""" \
-          + "\n\t".join("{0} - {1}".format(name, self.command_table[name].description)
+          + "\n\t".join("{0} - {1}".format(
+              name, self.command_table[name].description)
                         for name in self.command_table.keys())
+
+    def multipart_as_string(self, subject, to_address, from_address, text):
+        result = MIMEMultipart()
+        result['Subject'] = subject
+        result['To'] = to_address
+        result['From'] = from_address
+        result.attach(MIMEText(text))
+        return result.as_string()
 
     def help_response(self, subject, to_address):
         """
         This should probably be a separate command that is matched when nothing else is, but
         I'm putting it here because it needs knowledge of other commands.
         """
-        outer = MIMEMultipart()
-        outer['Subject'] = subject
-        outer['To'] = to_address
-        outer['From'] = self.return_address
-        outer.attach(MIMEText(self.help))
-        return outer.as_string()
-        
+        return self.multipart_as_string(subject, to_address,
+                                        self.return_address, self.help)
+
+    def admin_response(self, exception, msg):
+        p = ParsedEmail(msg)
+        return self.multipart_as_string(
+            "Cary: serious error",
+            self.admin_email,
+            self.return_address,
+            """
+A Cary command generated an exception:
+{0}
+
+From message with subject:
+{1}
+
+and body
+{2}""".format(repr(exception), p.subject, p.body))
+
+
+    def send_admin_email(self, exception, msg):
+        self.send_response(self.admin_email,
+                           self.admin_response(exception, msg))
+
+    def apology_response(self, msg):
+        p = ParsedEmail(msg)
+        return self.multipart_as_string(
+            "I'm sorry!",
+            p.from_address,
+            self.return_address,
+            """
+I'm sorry, but for some reason your message {0} failed; an email has been sent
+to the administrator and hopefully they will fix whatever went wrong!
+""".format(p.subject))
+
+    def send_apology_response(self, msg):
+        pass
 
     @property
     def allowed_addresses(self):
@@ -117,7 +156,7 @@ class CaryApp():
     def should_respond(self, value):
         self._should_respond = value
 
-    def send_response(self, subject, to_address, response):
+    def send_response(self, to_address, response):
         """
         Sends the response; this sends the tempdir/output/message.txt to
         the from: in the input message

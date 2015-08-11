@@ -9,6 +9,7 @@ def configure_cary(app, config):
     app.allowed_addresses = config.ALLOW_FROM_ADDRESSES
     app.smtp_host = config.SMTP_HOST
     app.return_address = config.SMTP_RETURN_ADDRESS
+    app.admin_email = config.ADMIN_ADDRESS
     app.should_clean_up = config.SHOULD_CLEAN_UP
     app.should_respond = config.SHOULD_RESPOND
     app.workspace = config.WORKSPACE_DIR
@@ -42,8 +43,15 @@ def main():
         configure_cary(app, config)
         msg = sys.stdin.read()
         app.process_message(msg)
-    except:
+    except Exception as e:
         logging.exception("Serious error on initialization/processing")
+        try:
+            if config.ADMIN_EMAIL:
+                app.send_admin_email(app, e, msg)
+            if config.SEND_APOLOGIES:
+                app.send_apology_email(msg)
+        except:
+            pass
 
 
 if __name__ == "__main__":
