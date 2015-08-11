@@ -9,7 +9,7 @@ def configure_cary(app, config):
     app.allowed_addresses = config.ALLOW_FROM_ADDRESSES
     app.smtp_host = config.SMTP_HOST
     app.return_address = config.SMTP_RETURN_ADDRESS
-    app.admin_email = config.ADMIN_ADDRESS
+    app.admin_email = config.ADMIN_EMAIL
     app.should_clean_up = config.SHOULD_CLEAN_UP
     app.should_respond = config.SHOULD_RESPOND
     app.workspace = config.WORKSPACE_DIR
