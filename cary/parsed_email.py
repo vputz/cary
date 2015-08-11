@@ -54,17 +54,24 @@ class ParsedEmail(object):
 
         dispositions = ParsedEmail.part_dispositions(part)
         for param in dispositions[1:]:
-            name, value = param.split("=")
-            name = name.lower().strip()
-            value = value.strip().strip('"')
-            if name == "filename":
-                attachment['name'] = value
-            elif name == "create-date":
-                attachment['create_date'] = value  # TODO: datetime
-            elif name == "modification-date":
-                attachment['mod_date'] = value  # TODO: datetime
-            elif name == "read-date":
-                attachment['read_date'] = value  # TODO: datetime
+
+            def name_and_value_from_param(p):
+                name, value = p.split("=")
+                name = name.lower().strip()
+                value = value.strip().strip('"')
+                return name, value
+
+            attachment_properties = {
+                'filename':'name',
+                'create_date': 'create_date',
+                'modification-date': 'mod_date',
+                'read-date': 'read_date'
+            }
+
+            name, value = name_and_value_from_param(param)
+            if name in attachment_properties:
+                attachment[attachment_properties[name]] = value
+
         return attachment
 
     @staticmethod
