@@ -47,8 +47,11 @@ def main():
         logging.exception("Serious error on initialization/processing")
         try:
             if config.ADMIN_EMAIL:
+                logging.error("Attempting admin email on exception {0}".format(
+                    repr(e)))
                 app.send_admin_email(app, e, msg)
             if config.SEND_APOLOGIES:
+                logging.error("Attempting apology email")
                 app.send_apology_email(msg)
         except:
             pass
