@@ -188,3 +188,7 @@ class CaryAction(metaclass=ABCMeta):
         Removes the working dir; use with some caution!
         """
         shutil.rmtree(self.working_dir)
+
+
+class CaryInvalidAttachmentException(Exception):
+    pass
