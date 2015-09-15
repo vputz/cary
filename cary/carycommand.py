@@ -132,7 +132,8 @@ class CaryAction(metaclass=ABCMeta):
         outer.attach(MIMEText(body, 'plain'))
         if html_body is not None:
             outer.attach(MIMEText(html_body, 'html'))
-        self.attach_files(outer, self._output_filenames)
+        if hasattr(self, '_output_filenames'):
+            self.attach_files(outer, self._output_filenames)
         with open(os.path.join(self.output_dir, 'message.txt'), "w") as f:
             s = outer.as_string()
             f.write(s)
