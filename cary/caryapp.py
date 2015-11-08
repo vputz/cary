@@ -168,7 +168,11 @@ to the administrator and hopefully they will fix whatever went wrong!
             "Sending mail using SMTP host {0}, return {1}, to {2}".format(
                 self.smtp_host, self.return_address, to_address))
         logging.debug("Response:\n{0}".format(response))
-        s = smtplib.SMTP(self.smtp_host)
+        s = smtplib.SMTP(self.smtp_host, self.smtp_port)
+        if self.smtp_security == 'TLS' :
+            s.starttls()
+        if self.smtp_user is not None:
+            s.login( self.smtp_user, self.smtp_password )
         logging.debug("Types: {0}, {1}, {2}".format(
             type(self.return_address),
             type(to_address),

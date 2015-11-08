@@ -47,3 +47,10 @@ COMMANDS = {"echo": (EchoCommand, {})}
 ALLOW_FROM_ADDRESSES = None
 SMTP_HOST = None
 SMTP_RETURN_ADDRESS = None
+
+POP_HOST = None
+POP_PORT = None
+POP_USE_SSL = None
+POP_USER = None
+POP_PASSWORD = None
+
